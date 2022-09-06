@@ -1,3 +1,4 @@
+import 'package:book_store/infrastructure/services.dart';
 import 'package:book_store/presentation/router/book_store_router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class BookStore extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (_) => newGoogleBooksApi(dio))
+        Provider<Api>(create: (_) => newGoogleBooksApi(dio)),
       ],
       child: MaterialApp(
         title: 'Book Store',

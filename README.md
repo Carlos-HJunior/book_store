@@ -6,9 +6,9 @@ Flutter practical test.
 
 ### Tasks
 
-- [ ] List of books
-  - [ ] (thumbnail) Two items per row
-  - [ ] (pagination) Load more as the user scroll's through the list
+- [x] List of books
+  - [x] (thumbnail) Two items per row
+  - [x] (pagination) Load more as the user scroll's through the list
   - [ ] (filter) Show favorite book by button
 - [ ] Book details
   - [ ] Most relevant information of the book (title, author, description, buy link/read link)
