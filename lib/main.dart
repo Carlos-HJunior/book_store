@@ -2,6 +2,7 @@ import 'package:book_store/infrastructure/services.dart';
 import 'package:book_store/presentation/router/book_store_router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'infrastructure/services/google_api.dart';
@@ -33,6 +34,7 @@ class BookStore extends StatelessWidget {
         title: 'Book Store',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          fontFamily: GoogleFonts.sourceSansPro().fontFamily
         ),
         routes: BookStoreRouter.routes(),
         debugShowCheckedModeBanner: false,

@@ -8,7 +8,19 @@ class BookPageDto {
   BookPageDto({this.kind, this.totalItems, this.items});
 
   List<Book> toBookList() {
-    return (items?.map((e) => Book(e.volumeInfo?.imageLinks?.thumbnail, e.volumeInfo?.title)) ?? []).toList();
+    return (items?.map(
+              (e) => Book(
+                e.volumeInfo?.imageLinks?.thumbnail,
+                e.volumeInfo?.title,
+                e.volumeInfo?.authors?.first,
+                e.saleInfo?.listPrice?.amount,
+                e.saleInfo?.listPrice?.currencyCode,
+                e.volumeInfo?.publishedDate,
+                e.volumeInfo?.publisher,
+              ),
+            ) ??
+            [])
+        .toList();
   }
 
   BookPageDto.fromJson(Map<String, dynamic> json) {

@@ -12,17 +12,47 @@ class BookListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      borderRadius: BorderRadius.circular(5),
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(book.thumbnail!),
-            fit: BoxFit.cover
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(book.thumbnail!),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          book.title!,
+                          overflow: TextOverflow.fade,
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(book.author!),
+                        if (book.publishDate != null) ...[Text('${book.publishDate}')],
+                        if (book.publisher != null) ...[Text('${book.publisher}')],
+                      ],
+                    ),
+                  ),
+                  Text(book.visualPrice),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            child: Icon(Icons.bookmark_border),
           )
-        ),
-      )
+        ],
+      ),
     );
   }
 }

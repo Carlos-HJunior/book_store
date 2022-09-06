@@ -23,25 +23,19 @@ class BookListView extends StatelessWidget {
 
             return Stack(
               children: [
-                GridView.builder(
+                ListView.separated(
+                  padding: EdgeInsets.all(10),
                   controller: state.controller,
-                  padding: const EdgeInsets.all(20),
-                  shrinkWrap: true,
-                  primary: false,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                  ),
                   itemCount: state.books.length,
                   itemBuilder: (context, index) {
                     return BookListItem(
-                      onTap: () {},
                       book: state.books[index],
+                      onTap: () {},
                     );
                   },
+                  separatorBuilder: (BuildContext context, int index) => const Divider(),
                 ),
-                if (state.loading)...[
+                if (state.loading) ...[
                   Positioned(
                     left: MediaQuery.of(context).size.width / 2 - 20,
                     bottom: 24,
