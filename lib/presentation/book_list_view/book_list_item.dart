@@ -1,58 +1,82 @@
 import 'package:book_store/domain/entities/book.dart';
 import 'package:flutter/material.dart';
 
+import '../shared/text_widget.dart';
+
 class BookListItem extends StatelessWidget {
   const BookListItem({
     required this.book,
     required this.onTap,
+    required this.onFavoriteTap,
   });
 
   final Book book;
   final Function() onTap;
+  final Function(Book) onFavoriteTap;
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.network(book.thumbnail!),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          book.title!,
-                          overflow: TextOverflow.fade,
-                          maxLines: 2,
-                          style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(book.author!),
-                        if (book.publishDate != null) ...[Text('${book.publishDate}')],
-                        if (book.publisher != null) ...[Text('${book.publisher}')],
-                      ],
-                    ),
-                  ),
-                  Text(book.visualPrice),
-                ],
+    return InkWell(
+      onTap: onTap,
+      child: IntrinsicHeight(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          height: 158,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 130,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(book.thumbnail!, fit: BoxFit.contain),
+                ),
               ),
-            ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: _BookInfo(book),
+                ),
+              ),
+              IconButton(
+                onPressed: () => onFavoriteTap(book),
+                icon: Icon(
+                  book.isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                  color: Colors.amber[700],
+                ),
+              ),
+            ],
           ),
-          Container(
-            child: Icon(Icons.bookmark_border),
-          )
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class _BookInfo extends StatelessWidget {
+  _BookInfo(this.book);
+
+  final Book book;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BaseTitle(book.title!),
+              BodyText(book.author!),
+              if (book.publishDate != null) ...[BodyText('${book.publishDate}')],
+              if (book.publisher != null) ...[BodyText('${book.publisher}')],
+            ],
+          ),
+        ),
+        BodyText(book.visualPrice),
+      ],
     );
   }
 }

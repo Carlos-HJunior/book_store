@@ -1,6 +1,8 @@
+import 'package:book_store/presentation/book_list_view/book_list_filter.dart';
 import 'package:book_store/presentation/book_list_view/book_list_item.dart';
 import 'package:book_store/presentation/book_list_view/book_list_state.dart';
 import 'package:book_store/presentation/shared/loading_widget.dart';
+import 'package:book_store/presentation/shared/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,28 +11,26 @@ class BookListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Book Store')),
-      body: ChangeNotifierProvider(
-        create: (consumer) => BookListState(consumer),
-        child: Consumer<BookListState>(
-          builder: (context, state, _) {
-            if (state.loading && state.books.isEmpty) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return Stack(
+    return ChangeNotifierProvider(
+      create: (consumer) => BookListState(consumer),
+      child: Consumer<BookListState>(
+        builder: (context, state, _) {
+          Widget child;
+          if (state.loading && state.books.isEmpty) {
+            child = const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            child = Stack(
               children: [
                 ListView.separated(
-                  padding: EdgeInsets.all(10),
                   controller: state.controller,
                   itemCount: state.books.length,
                   itemBuilder: (context, index) {
                     return BookListItem(
                       book: state.books[index],
                       onTap: () {},
+                      onFavoriteTap: state.onFavoriteItemTap,
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) => const Divider(),
@@ -44,9 +44,41 @@ class BookListView extends StatelessWidget {
                 ]
               ],
             );
-          },
-        ),
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Book Store'),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.filter_list_alt),
+                  onPressed: () {
+                    openFilter(
+                      context,
+                      state.onlyFavorite,
+                      (it) => state.onlyFavorite = it,
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: child,
+          );
+        },
       ),
+    );
+  }
+
+  openFilter(BuildContext context, bool switchFavorite, Function function) async {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return BookListFilter(
+          switchFavorite: switchFavorite,
+          onTimeCallback: function,
+        );
+      },
     );
   }
 }

@@ -1,7 +1,6 @@
-
-
 class Book {
   Book(
+    this.id,
     this.thumbnail,
     this.title,
     this.author,
@@ -11,6 +10,9 @@ class Book {
     this.publisher,
   );
 
+  bool isFavorite = false;
+
+  final String? id;
   final String? thumbnail;
   final String? title;
   final String? author;
@@ -25,4 +27,14 @@ class Book {
 
     return '$currency ${price!.toStringAsFixed(2)}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other)
+          || other is Book
+          && runtimeType == other.runtimeType
+          && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

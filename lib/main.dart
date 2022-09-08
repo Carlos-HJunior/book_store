@@ -1,4 +1,5 @@
 import 'package:book_store/infrastructure/services.dart';
+import 'package:book_store/infrastructure/services/favorite_cache_service.dart';
 import 'package:book_store/presentation/router/book_store_router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'infrastructure/services/google_api.dart';
 void main() {
   runApp(BookStore());
 }
+
+const dMessageError = 'Internal error. Please contact system administrator.';
 
 class BookStore extends StatelessWidget {
   BookStore({Key? key}) : super(key: key);
@@ -29,12 +32,14 @@ class BookStore extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<Api>(create: (_) => newGoogleBooksApi(dio)),
+        Provider<FavoriteService>(create: (_) => newFavoriteCacheService()),
       ],
       child: MaterialApp(
         title: 'Book Store',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          fontFamily: GoogleFonts.sourceSansPro().fontFamily
+          fontFamily: GoogleFonts.sourceSansPro().fontFamily,
+          textTheme: GoogleFonts.sourceSansProTextTheme(Theme.of(context).textTheme),
         ),
         routes: BookStoreRouter.routes(),
         debugShowCheckedModeBanner: false,

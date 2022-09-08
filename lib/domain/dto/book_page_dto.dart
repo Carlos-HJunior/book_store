@@ -3,39 +3,27 @@ import 'package:book_store/domain/entities/book.dart';
 class BookPageDto {
   String? kind;
   int? totalItems;
-  List<Items>? items;
+  List<BookItemDto>? items;
 
   BookPageDto({this.kind, this.totalItems, this.items});
 
   List<Book> toBookList() {
-    return (items?.map(
-              (e) => Book(
-                e.volumeInfo?.imageLinks?.thumbnail,
-                e.volumeInfo?.title,
-                e.volumeInfo?.authors?.first,
-                e.saleInfo?.listPrice?.amount,
-                e.saleInfo?.listPrice?.currencyCode,
-                e.volumeInfo?.publishedDate,
-                e.volumeInfo?.publisher,
-              ),
-            ) ??
-            [])
-        .toList();
+    return (items?.map((e) => e.toBookItem()) ?? []).toList();
   }
 
   BookPageDto.fromJson(Map<String, dynamic> json) {
     kind = json['kind'];
     totalItems = json['totalItems'];
     if (json['items'] != null) {
-      items = <Items>[];
+      items = <BookItemDto>[];
       json['items'].forEach((v) {
-        items!.add(new Items.fromJson(v));
+        items!.add(new BookItemDto.fromJson(v));
       });
     }
   }
 }
 
-class Items {
+class BookItemDto {
   String? kind;
   String? id;
   String? etag;
@@ -45,9 +33,22 @@ class Items {
   AccessInfo? accessInfo;
   SearchInfo? searchInfo;
 
-  Items({this.kind, this.id, this.etag, this.selfLink, this.volumeInfo, this.saleInfo, this.accessInfo, this.searchInfo});
+  BookItemDto({this.kind, this.id, this.etag, this.selfLink, this.volumeInfo, this.saleInfo, this.accessInfo, this.searchInfo});
 
-  Items.fromJson(Map<String, dynamic> json) {
+  Book toBookItem() {
+    return Book(
+      id,
+      volumeInfo?.imageLinks?.thumbnail,
+      volumeInfo?.title,
+      volumeInfo?.authors?.first,
+      saleInfo?.listPrice?.amount,
+      saleInfo?.listPrice?.currencyCode,
+      volumeInfo?.publishedDate,
+      volumeInfo?.publisher,
+    );
+  }
+
+  BookItemDto.fromJson(Map<String, dynamic> json) {
     kind = json['kind'];
     id = json['id'];
     etag = json['etag'];
