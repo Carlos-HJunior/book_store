@@ -2,7 +2,6 @@ import 'package:book_store/presentation/book_list_view/book_list_filter.dart';
 import 'package:book_store/presentation/book_list_view/book_list_item.dart';
 import 'package:book_store/presentation/book_list_view/book_list_state.dart';
 import 'package:book_store/presentation/shared/loading_widget.dart';
-import 'package:book_store/presentation/shared/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +28,7 @@ class BookListView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return BookListItem(
                       book: state.books[index],
-                      onTap: () {},
+                      onTap: () => state.onBookTap(state.books[index]),
                       onFavoriteTap: state.onFavoriteItemTap,
                     );
                   },

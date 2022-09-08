@@ -10,3 +10,7 @@ abstract class FavoriteService {
   Future remove(String id);
   Future<List<String>> getAllIdentifiers();
 }
+
+abstract class BrowserService {
+  Future tryLaunch(String url);
+}

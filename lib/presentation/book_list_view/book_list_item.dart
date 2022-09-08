@@ -6,13 +6,13 @@ import '../shared/text_widget.dart';
 class BookListItem extends StatelessWidget {
   const BookListItem({
     required this.book,
-    required this.onTap,
-    required this.onFavoriteTap,
+    this.onTap,
+    this.onFavoriteTap,
   });
 
   final Book book;
-  final Function() onTap;
-  final Function(Book) onFavoriteTap;
+  final Function()? onTap;
+  final Function(Book)? onFavoriteTap;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class BookListItem extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () => onFavoriteTap(book),
+                onPressed: () => onFavoriteTap?.call(book),
                 icon: Icon(
                   book.isFavorite ? Icons.bookmark : Icons.bookmark_border,
                   color: Colors.amber[700],
@@ -69,13 +69,13 @@ class _BookInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BaseTitle(book.title!),
-              BodyText(book.author!),
-              if (book.publishDate != null) ...[BodyText('${book.publishDate}')],
-              if (book.publisher != null) ...[BodyText('${book.publisher}')],
+              LabelText(book.author!),
+              if (book.publishDate != null) ...[LabelText('${book.publishDate}')],
+              if (book.publisher != null) ...[LabelText('${book.publisher}')],
             ],
           ),
         ),
-        BodyText(book.visualPrice),
+        LabelText(book.visualPrice),
       ],
     );
   }

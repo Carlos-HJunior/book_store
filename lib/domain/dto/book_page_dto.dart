@@ -45,6 +45,8 @@ class BookItemDto {
       saleInfo?.listPrice?.currencyCode,
       volumeInfo?.publishedDate,
       volumeInfo?.publisher,
+      saleInfo?.buyLink,
+      volumeInfo?.description,
     );
   }
 

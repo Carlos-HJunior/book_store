@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../main.dart';
+import '../router/book_store_router.dart';
 import '../shared/snackbar_widget.dart';
 
 class BookListState extends ChangeNotifier {
@@ -26,7 +27,7 @@ class BookListState extends ChangeNotifier {
 
   var _loading = true;
   var _isLastPage = false;
-  var _onlyFavorite = true;
+  var _onlyFavorite = false;
 
   var page = 0;
   final int maxResults = 12;
@@ -37,7 +38,7 @@ class BookListState extends ChangeNotifier {
     super.dispose();
   }
 
-  fetchPage() async {
+  _fetchPage() async {
     try {
       var api = Provider.of<Api>(context, listen: false);
       BookPageDto dto = await api.fetch(page, maxResults);
@@ -56,7 +57,7 @@ class BookListState extends ChangeNotifier {
     }
   }
 
-  fetchFavorites(List<String> favorites) async {
+  _fetchFavorites(List<String> favorites) async {
     var api = Provider.of<Api>(context, listen: false);
 
     try {
@@ -87,7 +88,6 @@ class BookListState extends ChangeNotifier {
     }
   }
 
-
   fetch() async {
     loading = true;
 
@@ -95,19 +95,15 @@ class BookListState extends ChangeNotifier {
     var ids = await fService.getAllIdentifiers();
 
     if (_onlyFavorite) {
-      await fetchFavorites(ids);
+      await _fetchFavorites(ids);
     } else {
-      await fetchPage();
+      await _fetchPage();
     }
 
     for (var i = 0; i < books.length; i++)
       books[i].isFavorite = ids.contains(books[i].id);
 
     loading = false;
-  }
-
-  onBookTap() {
-    // TODO: not yet implemented
   }
 
   onFavoriteItemTap(Book b) async {
@@ -131,6 +127,23 @@ class BookListState extends ChangeNotifier {
     page = 0;
     books.clear();
     await fetch();
+  }
+
+  onBookTap(Book book) async {
+    var needReload = await Navigator.pushNamed(
+      context,
+      BookStoreRouter.bookDetailRoute,
+      arguments: book,
+    ) as bool;
+
+    if (!needReload) return;
+
+    var fService = Provider.of<FavoriteService>(context, listen: false);
+    var ids = await fService.getAllIdentifiers();
+
+    for (var i = 0; i < books.length; i++)
+      books[i].isFavorite = ids.contains(books[i].id);
+    notifyListeners();
   }
 
   bool get loading => _loading;

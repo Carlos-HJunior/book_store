@@ -8,6 +8,8 @@ class Book {
     this.currency,
     this.publishDate,
     this.publisher,
+    this.buyLink,
+    this.description,
   );
 
   bool isFavorite = false;
@@ -20,6 +22,8 @@ class Book {
   final String? currency;
   final String? publishDate;
   final String? publisher;
+  final String? description;
+  final String? buyLink;
 
   String get visualPrice {
     if (price == null || currency == null)

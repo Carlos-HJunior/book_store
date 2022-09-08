@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BaseTitle extends StatelessWidget {
   BaseTitle(this.text);
@@ -17,8 +16,8 @@ class BaseTitle extends StatelessWidget {
   }
 }
 
-class BodyText extends StatelessWidget {
-  BodyText(this.text);
+class LabelText extends StatelessWidget {
+  LabelText(this.text);
 
   final String text;
 
@@ -29,6 +28,21 @@ class BodyText extends StatelessWidget {
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w200),
+    );
+  }
+}
+
+class BodyText extends StatelessWidget {
+  BodyText(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      maxLines: null,
+      style: Theme.of(context).textTheme.bodyMedium,
     );
   }
 }

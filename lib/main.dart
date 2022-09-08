@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'infrastructure/services/browser_service.dart';
 import 'infrastructure/services/google_api.dart';
 
 void main() {
@@ -33,6 +34,7 @@ class BookStore extends StatelessWidget {
       providers: [
         Provider<Api>(create: (_) => newGoogleBooksApi(dio)),
         Provider<FavoriteService>(create: (_) => newFavoriteCacheService()),
+        Provider<BrowserService>(create: (_) => newBrowserService()),
       ],
       child: MaterialApp(
         title: 'Book Store',

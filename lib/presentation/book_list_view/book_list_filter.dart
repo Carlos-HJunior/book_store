@@ -40,7 +40,7 @@ class _BookListFilterState extends State<BookListFilter> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              BodyText('Show only favorites'),
+              LabelText('Show only favorites'),
               Switch(
                 value: switchFavorite,
                 onChanged: (it) {
